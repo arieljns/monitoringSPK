@@ -17,7 +17,7 @@ import uploadFormData from '../interaction/upload';
 const steps = [
     {
         label: 'Nama Karyawan:',
-        description: <TextFieldComponent />,
+        description: <TextFieldComponent props="karyawan"/>,
     },
     {
         label: 'Pilih Tanggal',
@@ -55,20 +55,21 @@ const steps = [
     },
     {
         label: 'Satuan Capaian',
-        description: <CheckBoxComponent />,
+        description: <CheckBoxComponent props="satuanTarget" />,
     },
     {
         label: 'Deskripsi Kegiatan',
         description: <BasicTextFieldComponent props="text" />,
     },
+    {
+        label: 'Apakah Ada Kegiatan Lain?',
+        description: <CheckBoxComponent />,
+    },
 ];
 
-export function eventChecker(event) {
-    console.log(event);
-    return event;
-}
 
-export default function Card() {
+
+export default function Card({ onButtonClick }) {
     const [eventValue, setEventValue] = useState(null);
     const [activeStep, setActiveStep] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,7 +89,6 @@ export default function Card() {
 
     const objectKey = ["namaKaryawan", "tanggal", "kehadiran", "jamMulai", "jamSelesai",
         "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "deskripsiKegiatan"
-
     ]
 
     const updateEventValue = (newEventValue) => {
@@ -96,9 +96,10 @@ export default function Card() {
     };
 
     const renderStepContent = (step) => {
-        return React.cloneElement(step.description, { updateEventValue });
-    };
 
+        return React.cloneElement(step.description, { updateEventValue, currentContext: context });
+    };
+    console.log("Ini adalah eventValuenya:", eventValue)
     const handleNext = () => {
         const keyIteration = objectKey[activeStep]
         setContext((prevContext) => ({
@@ -107,15 +108,16 @@ export default function Card() {
         }))
         setActiveStep((prevActiveStep) => {
             const nextStep = prevActiveStep + 1;
-            if (nextStep === steps.length - 1 || eventValue === "sakit") {
+            if (nextStep === steps.length || eventValue === "cuti") {
                 uploadFormData(context)
                 setIsModalOpen(true);
             }
             return nextStep;
         });
-        setEventValue(null)
+        if (eventValue === "ya") {
+            onButtonClick()
+        }
     };
-
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -126,7 +128,7 @@ export default function Card() {
         setIsModalOpen(false);
     };
 
-    var testing = activeStep === steps.length || eventValue === "sakit"
+    var testing = activeStep === steps.length || eventValue === "cuti"
     return (
         <Box className="form-container" elevation={10} sx={{ maxWidth: 400, position: "relative", right: 5 }}>
             <Stepper elevation={10} activeStep={activeStep} orientation="vertical" >
@@ -164,11 +166,10 @@ export default function Card() {
             </Stepper>
             {isModalOpen && (
                 <div>
-                    {console.log("ini kepencet su")}
                     <ModalComponent handleReset={handleReset} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
                 </div>
             )}
-
         </Box>
     )
 }
+

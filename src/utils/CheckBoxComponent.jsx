@@ -10,14 +10,17 @@ export default function CheckboxLabels({ updateEventValue, props }) {
     const [form, setForm] = useState("")
     const [selectedOption, setSelectedOption] = useState(null);
 
-    const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent/> ]
-    const kehadiran = ['hadir', 'sakit', 'cuti']
+    const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent />]
+    const kehadiran = ['hadir', 'cuti']
+    const kegiatan = ['ya', 'tidak']
 
 
     if (props === "kehadiran") {
         var freeVariable = kehadiran
+    } else if (props === 'satuanTarget') {
+        freeVariable = satuanTarget
     } else {
-         freeVariable = satuanTarget
+        freeVariable = kegiatan
     }
 
     const handleCheckboxClick = (option) => {

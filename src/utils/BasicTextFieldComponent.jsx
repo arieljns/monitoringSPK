@@ -9,7 +9,7 @@ export default function TextFieldHiddenLabel({ props, updateEventValue }) {
 
 
     function handleNumberChange(selectedNumber) {
-        setNumber(selectedNumber)
+        setNumber(selectedNumber.target.value)
 
     }
     updateEventValue(number)

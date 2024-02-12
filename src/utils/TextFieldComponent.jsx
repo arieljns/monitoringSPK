@@ -5,7 +5,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import names from '../data/employeeName';
+import {namaPjk, namaKaryawan} from "../data/employeeName"
 
 
 
@@ -31,7 +31,7 @@ function getStyles(name, personName, theme) {
     };
 }
 
-export default function MultipleSelect({updateEventValue}) {
+export default function MultipleSelect({updateEventValue, props}) {
     const theme = useTheme();
     const [personName, setPersonName] = React.useState([]);
 
@@ -45,6 +45,13 @@ export default function MultipleSelect({updateEventValue}) {
     };
     updateEventValue(personName)
     
+    var freeVar= null
+
+    if(props === "karyawan"){
+        freeVar= namaKaryawan
+    }else{
+        freeVar= namaPjk
+    }
 
     return (
         <div>
@@ -59,7 +66,7 @@ export default function MultipleSelect({updateEventValue}) {
                     input={<OutlinedInput label="Name" />}
                     MenuProps={MenuProps}
                 >
-                    {names.map((name) => (
+                    {freeVar.map((name) => (
                         <MenuItem
                             key={name}
                             value={name}
