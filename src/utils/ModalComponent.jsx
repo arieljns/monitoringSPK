@@ -1,75 +1,54 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import Modal from 'react-modal';
 import Button from '@mui/material/Button';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import Typography from '@mui/material/Typography';
+import { Typography } from '@mui/material';
+import { useEffect } from "react"
 
 
+// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
+Modal.setAppElement('#root');
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
+function ModalComponent({ handleReset, isModalOpen, setIsModalOpen }) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-function SimpleDialog(props) {
-  const { onClose, selectedValue, open, handleReset } = props;
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.position = 'fixed';
+    } else {
+      document.body.style.position = 'static';
+    }
 
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
+    return () => {
+      document.body.style.position = 'static';
+    };
+  }, [isModalOpen]);
 
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
-
-  function handleClick(){
+  function closeModal() {
+    setIsModalOpen(false);
     handleReset()
   }
 
   return (
     <div className='modal-container'>
-      <Dialog onClose={handleClose} open={open}>
-        <img src='teamwork02_221005.svg' alt='teamwork' width={128} height={168} />
-        <Typography variant='h4' sx={{ fontWeight: "bold", color: "#1976D2" }}>Terima Kasih Atas Responnya </Typography>
-        <Button onClick={handleClick} >OK</Button>
-      </Dialog>
+
+      <Modal
+        className="modal"
+        style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Thank You Modal"
+      >
+        <img src='woman_carrying_file_folders_221005.svg' width={198} height={198} />
+        <Typography variant='h4' sx={{ fontWeight: "bold" }}>Terima Kasih Untuk Respon Anda</Typography>
+        <Button variant="contained" onClick={closeModal}>Close</Button>
+      </Modal>
     </div>
   );
 }
 
-SimpleDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-  handleReset:PropTypes.func.isRequired,
-};
+export default ModalComponent;
 
-export default function SimpleDialogDemo({handleReset, isModalOpen, setIsModalOpen}) {
-  const [selectedValue, setSelectedValue] = React.useState(emails[1]);
-  
-  const handleClickOpen = () => {
-    setIsModalOpen(true);
-    handleReset()
-  };
 
-  const handleClose = (value) => {
-    setIsModalOpen(false);
-    setSelectedValue(value);
-  };
 
-  return (
-    <div>
-      <Typography variant="subtitle1" component="div">
-        Respon Sudah Selesai
-      </Typography>
-      <br />
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Unggah & Kirim
-      </Button>
-      <SimpleDialog
-        selectedValue={selectedValue}
-        open={isModalOpen}
-        onClose={handleClose}
-        handleReset={handleReset}
-      />
-    </div>
-  );
-}
+
+

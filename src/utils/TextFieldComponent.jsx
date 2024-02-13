@@ -5,7 +5,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {namaPjk, namaKaryawan} from "../data/employeeName"
+import { namaPjk, namaKaryawan } from "../data/employeeName"
+import { useEffect } from 'react';
 
 
 
@@ -15,7 +16,7 @@ const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
+            width: 280,
         },
     },
 };
@@ -31,37 +32,34 @@ function getStyles(name, personName, theme) {
     };
 }
 
-export default function MultipleSelect({updateEventValue, props}) {
+export default function TextFieldComponent({ updateEventValue, props }) {
     const theme = useTheme();
-    const [personName, setPersonName] = React.useState([]);
+    const [personName, setPersonName] = React.useState("");
+    const [isEmpty, setIsEmpty] = React.useState(false)
+
+
 
     const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setPersonName(
-            typeof value === 'string' ? value.split(',') : value,
-        );
+        setPersonName(event.target.value);
+        updateEventValue(event.target.value);
     };
-    updateEventValue(personName)
-    
-    var freeVar= null
 
-    if(props === "karyawan"){
-        freeVar= namaKaryawan
-    }else{
-        freeVar= namaPjk
+    var freeVar = null
+
+    if (props === "karyawan") {
+        freeVar = namaKaryawan
+    } else {
+        freeVar = namaPjk
     }
 
     return (
         <div>
             <FormControl sx={{ width: 250 }}>
-                <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+                <InputLabel >Name</InputLabel>
                 <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    multiple
-                    value={personName}
+                    single
+                    error={!personName}
+                    defaultValue={personName}
                     onChange={handleChange}
                     input={<OutlinedInput label="Name" />}
                     MenuProps={MenuProps}

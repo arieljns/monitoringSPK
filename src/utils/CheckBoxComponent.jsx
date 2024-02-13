@@ -9,6 +9,7 @@ export default function CheckboxLabels({ updateEventValue, props }) {
 
     const [form, setForm] = useState("")
     const [selectedOption, setSelectedOption] = useState(null);
+    const [click, setClick] = useState(false)
 
     const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent />]
     const kehadiran = ['hadir', 'cuti']
@@ -24,6 +25,7 @@ export default function CheckboxLabels({ updateEventValue, props }) {
     }
 
     const handleCheckboxClick = (option) => {
+        setClick(!click)
         setSelectedOption(option);
         updateEventValue(option)
     };
@@ -37,9 +39,13 @@ export default function CheckboxLabels({ updateEventValue, props }) {
                 freeVariable.map((target, index) => (
                     <FormControlLabel
                         key={index}
-                        control={<Checkbox disabled={selectedOption !== null && selectedOption !== target} />}
+                        control={<Checkbox
+                            onClick={() => handleCheckboxClick(target)}
+                            disabled={click && selectedOption !== target}
+
+                        />}
                         label={typeof target === 'string' ? target : null}
-                        onClick={() => handleCheckboxClick(target)}
+
                     />
                 ))
             }

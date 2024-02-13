@@ -10,6 +10,7 @@ import steps from '../data/stepsData';
 import ModalComponent from "../utils/ModalComponent"
 import uploadFormData from '../interaction/upload';
 import { useDataContext } from '../hooks/useDataContext';
+import Modal from "react-modal"
 
 
 export default function Card({ onButtonClick, updateContext }) {

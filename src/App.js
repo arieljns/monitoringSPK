@@ -10,9 +10,12 @@ function App() {
       </head>
       <div className='banner'>
         <img src='teamwork02_221005.svg' alt='teamwork' width={108} height={108} />
-        <Typography className='header' variant='h1 ' sx={{ fontSize: 30, fontWeight: "bold" }}>MONITORING SKP HARIAN</Typography>
+        <Typography className='header' variant='h1 ' sx={{ maxWidth: 190, fontSize: 30, fontWeight: "bold" }}>MONITORING <span>SKP HARIAN</span> </Typography>
       </div>
-      <TabsComponent />
+      <div className='tabsCompo'>
+        <TabsComponent />
+      </div>
+
     </div>
   )
 }

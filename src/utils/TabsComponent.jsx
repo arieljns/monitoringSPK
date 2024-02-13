@@ -6,6 +6,7 @@ import Card from '../components/Card';
 
 export default function ScrollableTabsButtonForce() {
     const [value, setValue] = React.useState(0);
+    const [contextData, setContextData] = React.useState()
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -14,31 +15,45 @@ export default function ScrollableTabsButtonForce() {
     const handleTabChange = (newValue) => {
         setValue(newValue);
     };
-    console.log(value)
+
+    const handleUpdateContext = (newContext) => {
+        setContextData(newContext)
+    }
+    console.log("Ini adalah data dari tabsComponent", contextData)
     const tabsData = [
         {
             label: "Kegiatan 1",
-            content: <Card onButtonClick={() => handleTabChange(1)} />,
+            content: <Card onButtonClick={() => handleTabChange(1)} updateContext={handleUpdateContext} />,
         },
         {
             label: "Kegiatan 2",
-            content: <Card onButtonClick={() => handleTabChange(0)} />,
-            disabled: true
+            content: <Card onButtonClick={() => handleTabChange(2)} updateContext={handleUpdateContext} />,
+            disabled: value !== 1
         },
         {
             label: "Kegiatan 3",
-            content: <Card onButtonClick={() => handleTabChange(1)} />,
-            disabled:true
+            content: <Card onButtonClick={() => handleTabChange(3)} />,
+            disabled: value !== 2
         },
         {
             label: "Kegiatan 4",
-            content: <Card onButtonClick={() => handleTabChange(0)} />,
-            disabled: true
+            content: <Card onButtonClick={() => handleTabChange(4)} />,
+            disabled: value !== 3
+        },
+        {
+            label: "Kegiatan 5",
+            content: <Card onButtonClick={() => handleTabChange(5)} />,
+            disabled: value !== 4
+        },
+        {
+            label: "Kegiatan 6",
+            content: <Card onButtonClick={() => handleTabChange(0)} updateContext={handleUpdateContext} />,
+            disabled: value !== 5
         },
     ];
 
     return (
-        <Box sx={{ maxWidth: { xs: 350, sm: 500 }, bgcolor: 'background.paper' }}>
+        <Box sx={{justifyContent:"center", maxWidth: { xs: 350, sm: 500 }, bgcolor: 'background.paper' }}>
             <Tabs
                 value={value}
                 onChange={handleChange}
