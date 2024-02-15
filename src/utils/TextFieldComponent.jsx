@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { namaPjk, namaKaryawan } from "../data/employeeName"
+import ModalComponent from './ModalComponent';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -14,6 +15,7 @@ const MenuProps = {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
             width: 280,
+            boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
         },
     },
 };
@@ -32,8 +34,15 @@ function getStyles(name, personName, theme) {
 export default function TextFieldComponent({ updateEventValue, props }) {
     const theme = useTheme();
     const [personName, setPersonName] = React.useState("");
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
 
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleChange = (event) => {
         setPersonName(event.target.value);
@@ -54,11 +63,11 @@ export default function TextFieldComponent({ updateEventValue, props }) {
                 <InputLabel >Name</InputLabel>
                 <Select
                     single
-                    error={!personName}
-                    defaultValue={personName}
-                    onChange={handleChange}
                     input={<OutlinedInput label="Name" />}
+                    onChange={handleChange} // Use null to remove the default menu
                     MenuProps={MenuProps}
+                    onClose={handleCloseModal}
+                    onOpen={handleOpenModal}
                 >
                     {freeVar.map((name) => (
                         <MenuItem
@@ -69,6 +78,8 @@ export default function TextFieldComponent({ updateEventValue, props }) {
                             {name}
                         </MenuItem>
                     ))}
+
+                    
                 </Select>
             </FormControl>
         </div>

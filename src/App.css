@@ -46,6 +46,11 @@
   justify-content: center;
 }
 
+.form-container{
+  display: flex;
+  justify-content: center;
+}
+
 .modal-container{
   max-height: fit-content;
   display: flex;
@@ -71,5 +76,5 @@
 }
 
 .overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity here */
+  background-color: rgba(0, 0, 0, 0.5); 
 }

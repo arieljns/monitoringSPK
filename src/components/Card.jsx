@@ -131,7 +131,7 @@ export default function Card({ onButtonClick, updateContext }) {
                         <StepLabel sx={{}}>
                             {step.label}
                         </StepLabel>
-                        <StepContent>
+                        <StepContent TransitionProps={{ unmountOnExit: false }} >
                             {renderStepContent(step)}
                             <Box sx={{ mb: 2 }}>
                                 <div>
