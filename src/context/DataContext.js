@@ -1,9 +1,6 @@
 
 import { createContext, useReducer } from "react"
 
-
-
-
 export const stateUpdate = (state, action) => {
     switch (action.type) {
         case "UPLOADING":

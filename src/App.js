@@ -9,7 +9,7 @@ function App() {
         <link rel='manifest' href="manifest.json"></link>
       </head>
       <div className='banner'>
-        <img src='teamwork02_221005.svg' alt='teamwork' width={108} height={108} />
+        <img src='serverMonitoring.png' alt='teamwork' width={128} height={108} />
         <Typography className='header' variant='h1 ' sx={{ maxWidth: 190, fontSize: 30, fontWeight: "bold" }}>MONITORING <span>SKP HARIAN</span> </Typography>
       </div>
       <div className='tabsCompo'>

@@ -1,13 +1,12 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import {useState} from "react"
+
 
 export default function TextFieldHiddenLabel({ props, updateEventValue }) {
-
-    const [number, setNumber] = useState()
-    const [change, setChange] = useState("")
-
+    const [number, setNumber]=useState()
+    const [change, setChange]=useState("")
     function handleNumberChange(selectedNumber) {
         const numberChange = selectedNumber.target.value
         setNumber(numberChange)
@@ -40,7 +39,9 @@ export default function TextFieldHiddenLabel({ props, updateEventValue }) {
             />
                 : <TextField
                     hiddenLabel
+                    error={!change || !number}
                     id="filled-hidden-label-normal"
+                    label="* angka"
                     variant="outlined"
                     type="number"
                     onChange={handleNumberChange}

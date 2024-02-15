@@ -6,9 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { namaPjk, namaKaryawan } from "../data/employeeName"
-import { useEffect } from 'react';
-
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,7 +32,6 @@ function getStyles(name, personName, theme) {
 export default function TextFieldComponent({ updateEventValue, props }) {
     const theme = useTheme();
     const [personName, setPersonName] = React.useState("");
-    const [isEmpty, setIsEmpty] = React.useState(false)
 
 
 

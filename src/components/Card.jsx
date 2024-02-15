@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -13,12 +13,12 @@ import { useDataContext } from '../hooks/useDataContext';
 
 
 export default function Card({ onButtonClick, updateContext }) {
-    const {  dispatch } = useDataContext();
+    const { dispatch } = useDataContext();
+
     const [eventValue, setEventValue] = useState(null);
     const [activeStep, setActiveStep] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // Separate state to store form data
+    const [error, setError] = useState(false);
     const [formData, setFormData] = useState({
         namaKaryawan: "",
         tanggal: {},
@@ -34,6 +34,19 @@ export default function Card({ onButtonClick, updateContext }) {
         deskripsiKegiatan: ""
     });
 
+    // Load formDataHistory from localStorage on component mount
+    useEffect(() => {
+        const formDataHistoryString = localStorage.getItem('formDataHistory');
+        if (formDataHistoryString) {
+            const formDataHistory = JSON.parse(formDataHistoryString);
+            // Assuming formDataHistory is an array
+            if (Array.isArray(formDataHistory) && formDataHistory.length > 0) {
+                // Set the latest formData from history
+                setFormData(formDataHistory[formDataHistory.length - 1]);
+            }
+        }
+    }, []);
+
     const objectKey = ["namaKaryawan", "tanggal", "kehadiran", "jamMulai", "jamSelesai",
         "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "buktiKegiatan", "deskripsiKegiatan"
     ];
@@ -46,8 +59,6 @@ export default function Card({ onButtonClick, updateContext }) {
         return React.cloneElement(step.description, { updateEventValue, currentContext: formData });
     };
 
-    console.log("Ini adalah eventValuenya:", eventValue);
-
     const handleNext = async () => {
         const keyIteration = objectKey[activeStep];
         const newFormData = {
@@ -56,12 +67,22 @@ export default function Card({ onButtonClick, updateContext }) {
         };
         setFormData(newFormData);
 
+        // Save the new formData to localStorage
+        const formDataHistoryString = localStorage.getItem('formDataHistory');
+        let formDataHistory = formDataHistoryString ? JSON.parse(formDataHistoryString) : [];
+        formDataHistory.push(newFormData);
+        localStorage.setItem('formDataHistory', JSON.stringify(formDataHistory));
+
         const nextStep = activeStep + 1;
         setActiveStep(nextStep);
 
         if (nextStep === steps.length || eventValue === "cuti") {
-            uploadFormData(newFormData);
+            let uploadingData = uploadFormData(newFormData);
             setIsModalOpen(true);
+            if (uploadingData.status !== 200) {
+                setError(true);
+            }
+            setError(false);
         }
 
         setEventValue(null);
@@ -74,6 +95,7 @@ export default function Card({ onButtonClick, updateContext }) {
             onButtonClick();
         }
     };
+
     function isEmpty(value) {
         if (typeof value === 'string') {
             return !value || value.trim().length === 0;
@@ -84,8 +106,13 @@ export default function Card({ onButtonClick, updateContext }) {
         }
     }
 
-
     const handleBack = () => {
+        // Remove the latest formData from history
+        const formDataHistoryString = localStorage.getItem('formDataHistory');
+        let formDataHistory = formDataHistoryString ? JSON.parse(formDataHistoryString) : [];
+        formDataHistory.pop();
+        localStorage.setItem('formDataHistory', JSON.stringify(formDataHistory));
+
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
@@ -108,7 +135,6 @@ export default function Card({ onButtonClick, updateContext }) {
                             {renderStepContent(step)}
                             <Box sx={{ mb: 2 }}>
                                 <div>
-
                                     <Button
                                         disabled={isEmpty(eventValue)}
                                         variant="contained"
@@ -132,7 +158,7 @@ export default function Card({ onButtonClick, updateContext }) {
             </Stepper>
             {isModalOpen && (
                 <div>
-                    <ModalComponent handleReset={handleReset} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                    <ModalComponent handleError={error} handleReset={handleReset} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
                 </div>
             )}
         </Box>
