@@ -10,11 +10,10 @@ import steps from '../data/stepsData';
 import ModalComponent from "../utils/ModalComponent"
 import uploadFormData from '../interaction/upload';
 import { useDataContext } from '../hooks/useDataContext';
-import Modal from "react-modal"
 
 
 export default function Card({ onButtonClick, updateContext }) {
-    const { state, dispatch } = useDataContext();
+    const {  dispatch } = useDataContext();
     const [eventValue, setEventValue] = useState(null);
     const [activeStep, setActiveStep] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +35,7 @@ export default function Card({ onButtonClick, updateContext }) {
     });
 
     const objectKey = ["namaKaryawan", "tanggal", "kehadiran", "jamMulai", "jamSelesai",
-        "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "deskripsiKegiatan"
+        "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "buktiKegiatan", "deskripsiKegiatan"
     ];
 
     const updateEventValue = (newEventValue) => {

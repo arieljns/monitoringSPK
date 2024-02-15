@@ -5,14 +5,21 @@ import { useState } from 'react';
 
 export default function TextFieldHiddenLabel({ props, updateEventValue }) {
 
-    const [number, setNumber] = useState(0)
-
+    const [number, setNumber] = useState()
+    const [change, setChange] = useState("")
 
     function handleNumberChange(selectedNumber) {
-        setNumber(selectedNumber.target.value)
-
+        const numberChange = selectedNumber.target.value
+        setNumber(numberChange)
+        updateEventValue(numberChange)
     }
-    updateEventValue(number)
+
+    function handleChange(changes) {
+        const textChange = changes.target.value
+        setChange(textChange)
+        updateEventValue(textChange)
+    }
+
     return (
         <Stack
             component="form"
@@ -28,7 +35,7 @@ export default function TextFieldHiddenLabel({ props, updateEventValue }) {
                 id="filled-hidden-label-normal"
                 variant="outlined"
                 type='text'
-                onChange={handleNumberChange}
+                onChange={handleChange}
                 multiline
             />
                 : <TextField

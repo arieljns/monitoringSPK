@@ -4,12 +4,10 @@ import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useEffect } from "react"
 
-
-// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#root');
 
 function ModalComponent({ handleReset, isModalOpen, setIsModalOpen }) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+
 
   useEffect(() => {
     if (isModalOpen) {

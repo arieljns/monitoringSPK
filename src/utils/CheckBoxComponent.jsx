@@ -3,15 +3,15 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import BasicTextFieldComponent from './BasicTextFieldComponent'
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+
 
 export default function CheckboxLabels({ updateEventValue, props }) {
 
-    const [form, setForm] = useState("")
     const [selectedOption, setSelectedOption] = useState(null);
     const [click, setClick] = useState(false)
 
-    const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent />]
+    const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent props="text" />]
     const kehadiran = ['hadir', 'cuti']
     const kegiatan = ['ya', 'tidak']
 
@@ -24,13 +24,25 @@ export default function CheckboxLabels({ updateEventValue, props }) {
         freeVariable = kegiatan
     }
 
-    const handleCheckboxClick = (option) => {
-        setClick(!click)
-        setSelectedOption(option);
-        updateEventValue(option)
-    };
+    const handleCheckboxClick = useCallback((option) => {
+        if (option.type === BasicTextFieldComponent) {
+            console.log("This is a BasicTextFieldComponent");
+        }
+        setClick((prevClick) => !prevClick);
+        setSelectedOption((prevOption) => {
+            const newOption = option === prevOption ? null : option;
+            newOption && updateEventValue(newOption);
+            return newOption;
+        });
+    }, [updateEventValue]);
 
-    console.log(form)
+
+    const renderLabel = (target) => {
+        if (React.isValidElement(target) && target.type === BasicTextFieldComponent) {
+            return React.cloneElement(target, { updateEventValue });
+        }
+        return target;
+    }
 
     return (
 
@@ -42,9 +54,8 @@ export default function CheckboxLabels({ updateEventValue, props }) {
                         control={<Checkbox
                             onClick={() => handleCheckboxClick(target)}
                             disabled={click && selectedOption !== target}
-
                         />}
-                        label={typeof target === 'string' ? target : null}
+                        label={renderLabel(target)}
 
                     />
                 ))
