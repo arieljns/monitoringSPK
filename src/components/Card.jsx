@@ -34,18 +34,7 @@ export default function Card({ onButtonClick, updateContext }) {
         deskripsiKegiatan: ""
     });
 
-    // Load formDataHistory from localStorage on component mount
-    useEffect(() => {
-        const formDataHistoryString = localStorage.getItem('formDataHistory');
-        if (formDataHistoryString) {
-            const formDataHistory = JSON.parse(formDataHistoryString);
-            // Assuming formDataHistory is an array
-            if (Array.isArray(formDataHistory) && formDataHistory.length > 0) {
-                // Set the latest formData from history
-                setFormData(formDataHistory[formDataHistory.length - 1]);
-            }
-        }
-    }, []);
+
 
     const objectKey = ["namaKaryawan", "tanggal", "kehadiran", "jamMulai", "jamSelesai",
         "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "buktiKegiatan", "deskripsiKegiatan"
@@ -67,16 +56,12 @@ export default function Card({ onButtonClick, updateContext }) {
         };
         setFormData(newFormData);
 
-        // Save the new formData to localStorage
-        const formDataHistoryString = localStorage.getItem('formDataHistory');
-        let formDataHistory = formDataHistoryString ? JSON.parse(formDataHistoryString) : [];
-        formDataHistory.push(newFormData);
-        localStorage.setItem('formDataHistory', JSON.stringify(formDataHistory));
 
         const nextStep = activeStep + 1;
         setActiveStep(nextStep);
 
         if (nextStep === steps.length || eventValue === "cuti") {
+            console.log(newFormData)
             let uploadingData = uploadFormData(newFormData);
             setIsModalOpen(true);
             if (uploadingData.status !== 200) {
@@ -107,12 +92,7 @@ export default function Card({ onButtonClick, updateContext }) {
     }
 
     const handleBack = () => {
-        // Remove the latest formData from history
-        const formDataHistoryString = localStorage.getItem('formDataHistory');
-        let formDataHistory = formDataHistoryString ? JSON.parse(formDataHistoryString) : [];
-        formDataHistory.pop();
-        localStorage.setItem('formDataHistory', JSON.stringify(formDataHistory));
-
+        setEventValue(null)
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 

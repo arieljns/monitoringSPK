@@ -6,7 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { namaPjk, namaKaryawan } from "../data/employeeName"
-import ModalComponent from './ModalComponent';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,43 +30,32 @@ function getStyles(name, personName, theme) {
     };
 }
 
-export default function TextFieldComponent({ updateEventValue, props }) {
+export default function TextFieldComponent({ updateEventValue, props, }) {
     const theme = useTheme();
     const [personName, setPersonName] = React.useState("");
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
 
     const handleChange = (event) => {
         setPersonName(event.target.value);
         updateEventValue(event.target.value);
     };
+    
 
-    var freeVar = null
+    var freeVar = null;
 
     if (props === "karyawan") {
-        freeVar = namaKaryawan
+        freeVar = namaKaryawan;
     } else {
-        freeVar = namaPjk
+        freeVar = namaPjk;
     }
 
     return (
         <div>
             <FormControl sx={{ width: 250 }}>
-                <InputLabel >Name</InputLabel>
+                <InputLabel>Name</InputLabel>
                 <Select
                     single
                     input={<OutlinedInput label="Name" />}
-                    onChange={handleChange} // Use null to remove the default menu
-                    MenuProps={MenuProps}
-                    onClose={handleCloseModal}
-                    onOpen={handleOpenModal}
+                    onChange={handleChange}
                 >
                     {freeVar.map((name) => (
                         <MenuItem
@@ -78,10 +66,9 @@ export default function TextFieldComponent({ updateEventValue, props }) {
                             {name}
                         </MenuItem>
                     ))}
-
-                    
                 </Select>
             </FormControl>
         </div>
     );
 }
+
