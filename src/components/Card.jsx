@@ -64,6 +64,7 @@ export default function Card({ onButtonClick, updateContext }) {
             console.log(newFormData)
             let uploadingData = uploadFormData(newFormData);
             setIsModalOpen(true);
+            setEventValue(null);
             if (uploadingData.status !== 200) {
                 setError(true);
             }
@@ -104,7 +105,7 @@ export default function Card({ onButtonClick, updateContext }) {
     var testing = activeStep === steps.length || eventValue === "cuti";
 
     return (
-        <Box className="form-container" elevation={100} sx={{ maxWidth:{ xs: 370, sm: 475 }, overflowX:"hidden"}}>
+        <Box className="form-container" elevation={100} sx={{ maxWidth: { xs: 370, sm: 475 }, overflowX: "hidden" }}>
             <Stepper elevation={10} activeStep={activeStep} orientation="vertical" >
                 {steps.map((step, index) => (
                     <Step key={step.label}>

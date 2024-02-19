@@ -44,8 +44,10 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
 
     function stringAvatar(name) {
         return {
-            sx: {
-                marginRight: 1
+            style: {
+                marginRight: 9,
+                width: 28,
+                height: 28,
             },
             children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
         };
@@ -61,7 +63,7 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
 
     return (
         <div>
-            <FormControl sx={{ maxWidth: { xs: 370, sm: 475 }, minWidth:250 }}>
+            <FormControl sx={{ maxWidth: { xs: 370, sm: 475 }, minWidth: 250 }}>
                 <InputLabel>Name</InputLabel>
                 <Select
                     single
@@ -74,8 +76,8 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
                             value={name}
                             style={getStyles(name, personName, theme)}
                         >
-                            {avatar && <Avatar sx={{ width: 14, height: 14 }} {...stringAvatar(name)} />}
-                            {name.slice(0,30)}
+                            {avatar && <Avatar  {...stringAvatar(name)} />}
+                            {name.slice(0, 30)}
                         </MenuItem>
                     ))}
                 </Select>
