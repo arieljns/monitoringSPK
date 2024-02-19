@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { namaPjk, namaKaryawan } from "../data/employeeName"
+import { Avatar } from '@mui/material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,12 +34,22 @@ function getStyles(name, personName, theme) {
 export default function TextFieldComponent({ updateEventValue, props, }) {
     const theme = useTheme();
     const [personName, setPersonName] = React.useState("");
+    const [avatar, setAvatar] = React.useState(true)
 
     const handleChange = (event) => {
         setPersonName(event.target.value);
         updateEventValue(event.target.value);
+        setAvatar(false)
     };
-    
+
+    function stringAvatar(name) {
+        return {
+            sx: {
+                marginRight: 1
+            },
+            children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+        };
+    }
 
     var freeVar = null;
 
@@ -63,6 +74,7 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
                             value={name}
                             style={getStyles(name, personName, theme)}
                         >
+                            {avatar && <Avatar sx={{ width: 14, height: 14 }} {...stringAvatar(name)} />}
                             {name}
                         </MenuItem>
                     ))}
