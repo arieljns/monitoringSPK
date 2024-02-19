@@ -53,7 +53,7 @@ export default function ScrollableTabsButtonForce() {
     ];
 
     return (
-        <Box sx={{justifyContent:"center", maxWidth: { xs: 350, sm: 500 }, bgcolor: 'background.paper' }}>
+        <Box sx={{justifyContent:"center", maxWidth: { xs: 350, sm: 400 }, bgcolor: 'background.paper' }}>
             <Tabs
                 value={value}
                 onChange={handleChange}

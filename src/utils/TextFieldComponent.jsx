@@ -61,7 +61,7 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
 
     return (
         <div>
-            <FormControl sx={{ width: 250 }}>
+            <FormControl sx={{ maxWidth: { xs: 370, sm: 475 }, minWidth:250 }}>
                 <InputLabel>Name</InputLabel>
                 <Select
                     single
@@ -75,7 +75,7 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
                             style={getStyles(name, personName, theme)}
                         >
                             {avatar && <Avatar sx={{ width: 14, height: 14 }} {...stringAvatar(name)} />}
-                            {name}
+                            {name.slice(0,30)}
                         </MenuItem>
                     ))}
                 </Select>

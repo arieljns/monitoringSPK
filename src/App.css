@@ -10,7 +10,7 @@
 
 
 .main-container{
-  min-width: 100px;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,11 +59,12 @@
 .tabsCompo{
   display: flex;
   justify-content: center;
+  position:sticky;
+  top: 0;
 }
 
 .form-container{
   display: flex;
-  justify-content: center;
 }
 
 .modal-container{

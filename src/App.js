@@ -10,7 +10,7 @@ function App() {
       </head>
       <div className='banner'>
         <img src='serverMonitoring.png' alt='teamwork' width={128} height={108} />
-        <Typography className='header' variant='h1 ' sx={{ maxWidth: 190, fontSize: 30, fontWeight: "bold" }}>MONITORING <span>SKP HARIAN</span> </Typography>
+        <Typography className='header' variant='h1 ' sx={{ maxWidth: 190, fontSize: 28, fontWeight: "bold" }}>MONITORING <span>SKP HARIAN</span> </Typography>
       </div>
       <div className='tabsCompo'>
         <TabsComponent />

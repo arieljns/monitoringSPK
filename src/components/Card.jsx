@@ -104,7 +104,7 @@ export default function Card({ onButtonClick, updateContext }) {
     var testing = activeStep === steps.length || eventValue === "cuti";
 
     return (
-        <Box className="form-container" elevation={10} sx={{ maxWidth: 400, position: "relative", right: 5 }}>
+        <Box className="form-container" elevation={100} sx={{ maxWidth:{ xs: 370, sm: 475 }, overflowX:"hidden"}}>
             <Stepper elevation={10} activeStep={activeStep} orientation="vertical" >
                 {steps.map((step, index) => (
                     <Step key={step.label}>
