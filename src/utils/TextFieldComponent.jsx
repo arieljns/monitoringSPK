@@ -48,6 +48,7 @@ export default function TextFieldComponent({ updateEventValue, props, }) {
                 marginRight: 9,
                 width: 28,
                 height: 28,
+                backgroundColor: "#42A5F5"
             },
             children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
         };

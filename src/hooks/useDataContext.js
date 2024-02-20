@@ -1,14 +1,18 @@
-import { useContext } from "react"
-import { DataContext } from "../context/DataContext"
-
+import { useContext } from "react";
+import { DataContext } from "../context/DataContext";
 
 export const useDataContext = () => {
-    const context = useContext(DataContext)
+    const context = useContext(DataContext);
 
-    if (!DataContext) {
-        throw Error("did not receive any context in here")
+    if (!context) {
+        throw Error("The DataContext is undefined. Make sure you are using the hook within the DataContextProvider.");
     }
 
+    const { nextTab, dispatch } = context;
 
-    return context
-}
+    const setNextTab = (value) => {
+        dispatch({ type: 'SET_NEXT_TAB', payload: value });
+    };
+
+    return { ...context, nextTab, setNextTab };
+};
