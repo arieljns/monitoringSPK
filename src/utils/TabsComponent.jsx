@@ -6,7 +6,7 @@ import Card from '../components/Card';
 import {useEffect} from 'react';
 
 export default function ScrollableTabsButtonForce() {
-    const [value, setValue] = React.useState( 1)
+    const [value, setValue] = React.useState( 0)
     const [contextData, setContextData] = React.useState()
     const [allow, setAllow] = React.useState([0])
     const [currentTab, setCurrentTab]=React.useState(0)
