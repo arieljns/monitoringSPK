@@ -8,7 +8,7 @@ export const useDataContext = () => {
         throw Error("The DataContext is undefined. Make sure you are using the hook within the DataContextProvider.");
     }
 
-    const { nextTab, dispatch } = context;
+    const {data, nextTab, dispatch } = context;
 
     const setNextTab = (value) => {
         dispatch({ type: 'SET_NEXT_TAB', payload: value });

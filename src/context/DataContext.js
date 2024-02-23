@@ -16,7 +16,7 @@ export const DataContext = createContext()
 export const DataContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(stateUpdate, {
         data: null,
-        nextTab: false, // Add nextTab to your initial state
+        nextTab: false,
     })
     console.log('this is the context provider data', state)
     return (
