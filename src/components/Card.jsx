@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect, useReducer, useRef } from 'react';
+import {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -9,22 +9,23 @@ import Button from '@mui/material/Button';
 import steps from '../data/stepsData';
 import ModalComponent from "../utils/ModalComponent"
 import uploadFormData from '../interaction/upload';
-import { useDataContext } from '../hooks/useDataContext';
+import {useDataContext} from '../hooks/useDataContext';
+import {Typography} from "@mui/material";
+
 
 var slicedSteps = steps.slice(3, 13)
 
-export default function Card({ onButtonClick, updateContext }) {
-
-    console.log("the component is re render")
-    const { dispatch } = useDataContext();
-    const { nextTab, setNextTab } = useDataContext()
-
+export default function Card({onButtonClick, updateContext, currentTab}) {
+//nanti datanya tiap ganti kegiatan di upload nya ke cell masing-masing kegiatan, jadi nanti di cell nya judulnya tambahin nomor kegiatannya
+    const {data, dispatch} = useDataContext();
+    const {nextTab, setNextTab} = useDataContext();
+    const [updatedEventValue, setUpdateEventValue] = useState()
+    const [contentClicked, setContentClicked] = useState(false)
     const [eventValue, setEventValue] = useState(null);
-    const [activeStep, setActiveStep] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState(false);
-
-
+    const [edited, setEdited] = useState(false)
+    const [filledSteps, setFilledSteps] = useState([])
     const [formData, setFormData] = useState({
         namaKaryawan: "",
         tanggal: {},
@@ -39,64 +40,121 @@ export default function Card({ onButtonClick, updateContext }) {
         buktiKegiatan: "",
         deskripsiKegiatan: ""
     });
-    var freeVar = null
-    if (nextTab) {
-        freeVar = slicedSteps
-    } else {
-        freeVar = steps
-    }
-    useEffect(() => {
-        if (nextTab) {
-            console.log('This is my Next Tab value after change:', nextTab)
-        }
-    }, [nextTab])
+    const [activeStep, setActiveStep] = useState(0);
+    const [lastActiveStep, setLastActiveStep] = useState(0);
+
+
+    var freeVar = nextTab > 0 ? slicedSteps : steps
 
     const objectKey = ["namaKaryawan", "tanggal", "kehadiran", "jamMulai", "jamSelesai",
         "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "buktiKegiatan", "deskripsiKegiatan"
     ];
 
+    const handleContentClick = (index) => {
+        setContentClicked(index)
+    };
     const updateEventValue = (newEventValue) => {
         setEventValue(newEventValue);
     };
 
     const renderStepContent = (step) => {
-        return React.cloneElement(step.description, { updateEventValue, currentContext: formData });
+        return React.cloneElement(step.description, {updateEventValue, currentContext: formData});
     };
 
+    console.log("this is the state of context:", data);
+
+    useEffect(() => {
+        setUpdateEventValue(eventValue)
+    }, [eventValue])
+
+    useEffect(() => {
+        console.log("this is the updated formData: ", formData)
+    }, [formData])
 
     const handleNext = () => {
+
         const keyIteration = objectKey[activeStep];
         const newFormData = {
             ...formData,
             [keyIteration]: eventValue
         };
         setFormData(newFormData);
+
         let nextStep = activeStep + 1;
 
+        if (nextTab) {
+            let modifiedSteps = activeStep + 12
+            setFilledSteps([...filledSteps, modifiedSteps])
+        }
+        setFilledSteps([...filledSteps, activeStep])
         setActiveStep(nextStep);
+        setEdited(false)
+
         if (eventValue === "ya") {
-            setNextTab(true)
-            onButtonClick()
-            nextStep = 0
+            let counter = 0
+            counter++
+            setNextTab(counter);
+            dispatch({
+                type: "UPLOADING",
+                payload: newFormData
+            });
+            onButtonClick();
+            nextStep = 0;
+            setLastActiveStep(activeStep)
         }
 
-
         if (nextStep === freeVar.length || eventValue === "cuti") {
-            console.log(newFormData)
-            let uploadingData = uploadFormData(newFormData);
+
+            let mergedData;
+            if (data) {
+                mergedData = Object.keys(data).reduce((acc, key) => {
+                    return {
+                        ...acc,
+                        [key]: [data[key], newFormData[key]]
+                    };
+                }, {});
+            } else {
+                mergedData = {...newFormData};
+            }
+
+            console.log("this is data from:", mergedData);
+
+            let uploadingData = null;
+            if (nextTab) {
+                uploadingData = uploadFormData(mergedData);
+            } else {
+                uploadingData = uploadFormData(newFormData);
+            }
+
             setIsModalOpen(true);
             setEventValue(null);
+            dispatch({
+                type: "UPLOADING",
+                payload: null
+            })
+
             if (uploadingData.status !== 200) {
                 setError(true);
             }
             setError(false);
         }
 
+
         setEventValue(null);
-        console.log("this is my nextTab value after handleNext: ", nextTab)
     };
+    //edit the data
+    //changeObjectValues bakal diganti sama updateEventValue in particular index
+    const handleEdit = (index) => {
+        setEdited(true)
+        let editKey = Object.keys(formData)[index]
+        let editedValue = updatedEventValue
 
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [editKey]: editedValue
+        }))
 
+    }
 
     function isEmpty(value) {
         if (typeof value === 'string') {
@@ -107,43 +165,74 @@ export default function Card({ onButtonClick, updateContext }) {
             return !value;
         }
     }
+
     const handleBack = () => {
-        setEventValue(null)
+        setEventValue(null);
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
     const handleReset = () => {
-        setActiveStep(0);
+        setContentClicked(null);
+        setEventValue(null);
         setIsModalOpen(false);
+        setError(false);
+        setFormData({
+            namaKaryawan: "",
+            tanggal: {},
+            kehadiran: "",
+            jamMulai: {},
+            jamSelesai: {},
+            namaPjk: "",
+            target: null,
+            satuanTarget: "",
+            capaianTarget: null,
+            satuanCapaian: "",
+            buktiKegiatan: "",
+            deskripsiKegiatan: ""
+        });
+        setActiveStep(0);
+        setLastActiveStep(0);
+        setFilledSteps([]);
+        setNextTab(0);
     };
 
-    var testing = activeStep === steps.length || eventValue === "cuti";
+    var testing = activeStep === freeVar.length || eventValue === "cuti";
 
-   
     return (
-        <Box className="form-container" elevation={100} sx={{ maxWidth: { xs: 370, sm: 475 }, overflowX: "hidden" }}>
-            <Stepper elevation={10} activeStep={activeStep} orientation="vertical" >
+        <Box className="form-container" elevation={100} sx={{maxWidth: {xs: 370, sm: 475}, overflowX: "hidden"}}>
+            <Stepper elevation={10} activeStep={activeStep} active={true}
+                     orientation="vertical">
                 {freeVar.map((step, index) => (
-                    <Step key={step.label}>
+                    <Step key={step.label} expanded={filledSteps.includes(index)}>
                         <StepLabel sx={{}}>
                             {step.label}
                         </StepLabel>
-                        <StepContent TransitionProps={{ unmountOnExit: false }} >
+                        <StepContent onClick={() => handleContentClick(index)} TransitionProps={{unmountOnExit: false}}>
+                            {edited && index === contentClicked ?
+                                <Typography sx={{color: "#d20c0c", mb: 2}}>*Data telah di edit </Typography> : ""}
                             {renderStepContent(step)}
-                            <Box sx={{ mb: 2 }}>
+                            <Box sx={{mb: 2}}>
                                 <div>
-                                    <Button
+                                    {filledSteps.includes(index) ? <Button
+                                        disabled={index !== contentClicked}
+                                        variant="contained"
+                                        onClick={() => handleEdit(index)}
+                                        sx={{mt: 1, mr: 1}}
+                                    >
+                                        EDIT
+                                    </Button> : <Button
                                         disabled={isEmpty(eventValue)}
                                         variant="contained"
                                         onClick={handleNext}
-                                        sx={{ mt: 1, mr: 1 }}
+                                        sx={{mt: 1, mr: 1}}
                                     >
-                                        {index === (nextTab ? freeVar.length - 1 : freeVar.length - 1) || testing ? 'Selesai' : 'Selanjutnya'}
-                                    </Button>
+                                        {index === freeVar.length - 1 || testing ? 'Selesai' : 'Selanjutnya'}
+                                    </Button>}
+
                                     <Button
                                         disabled={index === 0}
                                         onClick={handleBack}
-                                        sx={{ mt: 1, mr: 1 }}
+                                        sx={{mt: 1, mr: 1}}
                                     >
                                         Kembali
                                     </Button>
@@ -156,7 +245,8 @@ export default function Card({ onButtonClick, updateContext }) {
 
             {isModalOpen && (
                 <div>
-                    <ModalComponent handleError={error} handleReset={handleReset} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                    <ModalComponent handleError={error} handleReset={handleReset} isModalOpen={isModalOpen}
+                                    setIsModalOpen={setIsModalOpen}/>
                 </div>
             )}
         </Box>
