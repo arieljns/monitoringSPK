@@ -16,9 +16,10 @@ import {Typography} from "@mui/material";
 var slicedSteps = steps.slice(3, 13)
 
 export default function Card({onButtonClick, updateContext, currentTab}) {
-
+//nanti datanya tiap ganti kegiatan di upload nya ke cell masing-masing kegiatan, jadi nanti di cell nya judulnya tambahin nomor kegiatannya
     const {data, dispatch} = useDataContext();
     const {nextTab, setNextTab} = useDataContext();
+    const [updatedEventValue, setUpdateEventValue] = useState()
     const [contentClicked, setContentClicked] = useState(false)
     const [eventValue, setEventValue] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,6 +62,14 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     };
 
     console.log("this is the state of context:", data);
+
+    useEffect(() => {
+        setUpdateEventValue(eventValue)
+    }, [eventValue])
+
+    useEffect(() => {
+        console.log("this is the updated formData: ", formData)
+    }, [formData])
 
     const handleNext = () => {
 
@@ -133,12 +142,18 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
 
         setEventValue(null);
     };
-
-
     //edit the data
+    //changeObjectValues bakal diganti sama updateEventValue in particular index
     const handleEdit = (index) => {
-        console.log(`this is index ${index} that you clicked `)
         setEdited(true)
+        let editKey = Object.keys(formData)[index]
+        let editedValue = updatedEventValue
+
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [editKey]: editedValue
+        }))
+
     }
 
     function isEmpty(value) {
@@ -221,9 +236,7 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
                                     >
                                         Kembali
                                     </Button>
-
                                 </div>
-
                             </Box>
                         </StepContent>
                     </Step>
