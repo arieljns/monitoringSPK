@@ -13,12 +13,14 @@ import {useDataContext} from '../hooks/useDataContext';
 import {Typography} from "@mui/material";
 
 
+
 var slicedSteps = steps.slice(3, 13)
 
 export default function Card({onButtonClick, updateContext, currentTab}) {
-//nanti datanya tiap ganti kegiatan di upload nya ke cell masing-masing kegiatan, jadi nanti di cell nya judulnya tambahin nomor kegiatannya
+
     const {data, dispatch} = useDataContext();
     const {nextTab, setNextTab} = useDataContext();
+    const [addingObj, setAddingObj] = useState(false)
     const [updatedEventValue, setUpdateEventValue] = useState()
     const [contentClicked, setContentClicked] = useState(false)
     const [eventValue, setEventValue] = useState(null);
@@ -26,22 +28,34 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     const [error, setError] = useState(false);
     const [edited, setEdited] = useState(false)
     const [filledSteps, setFilledSteps] = useState([])
+    const [activity, setActivity] = useState(1)
+    const [updatedsKey, setUpdatedsKey] = useState([])
     const [formData, setFormData] = useState({
         namaKaryawan: "",
-        tanggal: {},
+        tanggal: "",
         kehadiran: "",
-        jamMulai: {},
-        jamSelesai: {},
+        jamMulai: "",
+        jamSelesai: "",
         namaPjk: "",
         target: null,
         satuanTarget: "",
         capaianTarget: null,
         satuanCapaian: "",
         buktiKegiatan: "",
-        deskripsiKegiatan: ""
+        deskripsiKegiatan: "",
+        jamMulai_2: "",
+        jamSelesai_2: "",
+        namaPjk_2: "",
+        target_2: null,
+        satuanTarget_2: "",
+        capaianTarget_2: null,
+        satuanCapaian_2: "",
+        buktiKegiatan_2: "",
+        deskripsiKegiatan_2: ""
     });
     const [activeStep, setActiveStep] = useState(0);
     const [lastActiveStep, setLastActiveStep] = useState(0);
+
 
 
     var freeVar = nextTab > 0 ? slicedSteps : steps
@@ -49,6 +63,22 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     const objectKey = ["namaKaryawan", "tanggal", "kehadiran", "jamMulai", "jamSelesai",
         "namaPjk", "target", "satuanTarget", "capaianTarget", "satuanCapaian", "buktiKegiatan", "deskripsiKegiatan"
     ];
+
+    useEffect(() => {
+            const updatedKey = [...objectKey]
+            let counters = 0;
+            for (let key in formData) {
+                counters = counters + 1;
+                if (counters > 12) {
+                    updatedKey.push(key)
+                    setUpdatedsKey(updatedKey)
+                }
+            }
+
+        },
+        [addingObj]
+    )
+    ;
 
     const handleContentClick = (index) => {
         setContentClicked(index)
@@ -60,31 +90,32 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     const renderStepContent = (step) => {
         return React.cloneElement(step.description, {updateEventValue, currentContext: formData});
     };
-
-    console.log("this is the state of context:", data);
+    
 
     useEffect(() => {
         setUpdateEventValue(eventValue)
     }, [eventValue])
 
-    useEffect(() => {
-        console.log("this is the updated formData: ", formData)
-    }, [formData])
+    const handleNext = async () => {
+        let freeStep = nextTab ? activeStep + 12 : activeStep
+        let freeForm = nextTab ? data : formData
+        let objForm = nextTab ? updatedsKey : objectKey
+        console.log("this is the freeStep:", freeStep)
+        const keyIteration = objForm[freeStep];
 
-    const handleNext = () => {
-
-        const keyIteration = objectKey[activeStep];
         const newFormData = {
             ...formData,
             [keyIteration]: eventValue
         };
+
         setFormData(newFormData);
 
         let nextStep = activeStep + 1;
 
-        if (nextTab) {
+        if (nextTab > 0) {
             let modifiedSteps = activeStep + 12
             setFilledSteps([...filledSteps, modifiedSteps])
+            setActivity(prevActivity => prevActivity + 1)
         }
         setFilledSteps([...filledSteps, activeStep])
         setActiveStep(nextStep);
@@ -94,38 +125,33 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
             let counter = 0
             counter++
             setNextTab(counter);
-            dispatch({
+            await dispatch({
                 type: "UPLOADING",
                 payload: newFormData
             });
             onButtonClick();
             nextStep = 0;
             setLastActiveStep(activeStep)
+            setAddingObj(true)
+
         }
 
         if (nextStep === freeVar.length || eventValue === "cuti") {
-
-            let mergedData;
-            if (data) {
-                mergedData = Object.keys(data).reduce((acc, key) => {
-                    return {
-                        ...acc,
-                        [key]: [data[key], newFormData[key]]
-                    };
-                }, {});
-            } else {
-                mergedData = {...newFormData};
+            const combinedForm = {};
+            if (nextTab > 0) {
+                for (const key in formData) {
+                    if (formData[key] !== null && formData[key] !== "") {
+                        combinedForm[key] = formData[key];
+                    } else if (data[key] !== null && data[key] !== "") {
+                        combinedForm[key] = data[key];
+                    }
+                }
             }
-
-            console.log("this is data from:", mergedData);
-
-            let uploadingData = null;
-            if (nextTab) {
-                uploadingData = uploadFormData(mergedData);
-            } else {
-                uploadingData = uploadFormData(newFormData);
-            }
-
+            console.log("ini adalah formData: ", formData)
+            console.log("ini adalah data: ", data)
+            console.log("ini adalah combined form",combinedForm)
+            let uploadMana = nextTab? combinedForm: formData
+            let uploadingData = uploadFormData(uploadMana)
             setIsModalOpen(true);
             setEventValue(null);
             dispatch({
@@ -139,11 +165,9 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
             setError(false);
         }
 
-
         setEventValue(null);
     };
-    //edit the data
-    //changeObjectValues bakal diganti sama updateEventValue in particular index
+
     const handleEdit = (index) => {
         setEdited(true)
         let editKey = Object.keys(formData)[index]
@@ -199,7 +223,8 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     var testing = activeStep === freeVar.length || eventValue === "cuti";
 
     return (
-        <Box className="form-container" elevation={100} sx={{maxWidth: {xs: 370, sm: 475}, overflowX: "hidden"}}>
+        <Box className="form-container" elevation={100}
+             sx={{maxWidth: {xs: 370, sm: 475}, overflowX: "hidden"}}>
             <Stepper elevation={10} activeStep={activeStep} active={true}
                      orientation="vertical">
                 {freeVar.map((step, index) => (
@@ -207,9 +232,11 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
                         <StepLabel sx={{}}>
                             {step.label}
                         </StepLabel>
-                        <StepContent onClick={() => handleContentClick(index)} TransitionProps={{unmountOnExit: false}}>
+                        <StepContent onClick={() => handleContentClick(index)}
+                                     TransitionProps={{unmountOnExit: false}}>
                             {edited && index === contentClicked ?
-                                <Typography sx={{color: "#d20c0c", mb: 2}}>*Data telah di edit </Typography> : ""}
+                                <Typography sx={{color: "#d20c0c", mb: 2}}>*Data telah di
+                                    edit </Typography> : ""}
                             {renderStepContent(step)}
                             <Box sx={{mb: 2}}>
                                 <div>
