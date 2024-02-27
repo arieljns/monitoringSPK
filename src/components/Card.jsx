@@ -1,5 +1,14 @@
+
+
+/* DISCLAIMER TO FELLOW DEVELOPER or RECRUITER
+
+    if you see  monitoringSPK of this version, i'm so sorry u see this mess. 
+    i know this is messed up, but i will refactor the code and make a patch update to optimize the performance
+    and following the KISS paradigm. see ya 😍
+
+*/
 import React from 'react'
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -9,17 +18,17 @@ import Button from '@mui/material/Button';
 import steps from '../data/stepsData';
 import ModalComponent from "../utils/ModalComponent"
 import uploadFormData from '../interaction/upload';
-import {useDataContext} from '../hooks/useDataContext';
-import {Typography} from "@mui/material";
+import { useDataContext } from '../hooks/useDataContext';
+import { Typography } from "@mui/material";
 
 
 
 var slicedSteps = steps.slice(3, 13)
 
-export default function Card({onButtonClick, updateContext, currentTab}) {
+export default function Card({ onButtonClick, updateContext, currentTab }) {
 
-    const {data, dispatch} = useDataContext();
-    const {nextTab, setNextTab} = useDataContext();
+    const { data, dispatch } = useDataContext();
+    const { nextTab, setNextTab } = useDataContext();
     const [addingObj, setAddingObj] = useState(false)
     const [updatedEventValue, setUpdateEventValue] = useState()
     const [contentClicked, setContentClicked] = useState(false)
@@ -65,20 +74,20 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     ];
 
     useEffect(() => {
-            const updatedKey = [...objectKey]
-            let counters = 0;
-            for (let key in formData) {
-                counters = counters + 1;
-                if (counters > 12) {
-                    updatedKey.push(key)
-                    setUpdatedsKey(updatedKey)
-                }
+        const updatedKey = [...objectKey]
+        let counters = 0;
+        for (let key in formData) {
+            counters = counters + 1;
+            if (counters > 12) {
+                updatedKey.push(key)
+                setUpdatedsKey(updatedKey)
             }
+        }
 
-        },
+    },
         [addingObj]
     )
-    ;
+        ;
 
     const handleContentClick = (index) => {
         setContentClicked(index)
@@ -88,13 +97,22 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
     };
 
     const renderStepContent = (step) => {
-        return React.cloneElement(step.description, {updateEventValue, currentContext: formData});
+        return React.cloneElement(step.description, { updateEventValue, currentContext: formData });
     };
-    
+
 
     useEffect(() => {
         setUpdateEventValue(eventValue)
     }, [eventValue])
+
+    useEffect(()=>{
+        //every nextTab is increase then there are few things that needs to be change:
+        /* 1. freeStep -> because we need to track freeStep
+            2. objectKey must change in order to create more key according to the data
+            3. formData and data object? what am i do with this stuff?
+            
+        */
+    },[nextTab])
 
     const handleNext = async () => {
         let freeStep = nextTab ? activeStep + 12 : activeStep
@@ -149,8 +167,8 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
             }
             console.log("ini adalah formData: ", formData)
             console.log("ini adalah data: ", data)
-            console.log("ini adalah combined form",combinedForm)
-            let uploadMana = nextTab? combinedForm: formData
+            console.log("ini adalah combined form", combinedForm)
+            let uploadMana = nextTab ? combinedForm : formData
             let uploadingData = uploadFormData(uploadMana)
             setIsModalOpen(true);
             setEventValue(null);
@@ -170,8 +188,12 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
 
     const handleEdit = (index) => {
         setEdited(true)
-        let editKey = Object.keys(formData)[index]
+        let indexChange = nextTab > 0 ? index + 12 : index
+
+        let editKey = Object.keys(formData)[indexChange]
+        console.log("ini adalah key yang mau diedit: ", editKey)
         let editedValue = updatedEventValue
+
 
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -224,34 +246,34 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
 
     return (
         <Box className="form-container" elevation={100}
-             sx={{maxWidth: {xs: 370, sm: 475}, overflowX: "hidden"}}>
+            sx={{ maxWidth: { xs: 370, sm: 475 }, overflowX: "hidden" }}>
             <Stepper elevation={10} activeStep={activeStep} active={true}
-                     orientation="vertical">
+                orientation="vertical">
                 {freeVar.map((step, index) => (
                     <Step key={step.label} expanded={filledSteps.includes(index)}>
                         <StepLabel sx={{}}>
                             {step.label}
                         </StepLabel>
                         <StepContent onClick={() => handleContentClick(index)}
-                                     TransitionProps={{unmountOnExit: false}}>
+                            TransitionProps={{ unmountOnExit: false }}>
                             {edited && index === contentClicked ?
-                                <Typography sx={{color: "#d20c0c", mb: 2}}>*Data telah di
+                                <Typography sx={{ color: "#d20c0c", mb: 2 }}>*Data telah di
                                     edit </Typography> : ""}
                             {renderStepContent(step)}
-                            <Box sx={{mb: 2}}>
+                            <Box sx={{ mb: 2 }}>
                                 <div>
                                     {filledSteps.includes(index) ? <Button
                                         disabled={index !== contentClicked}
                                         variant="contained"
                                         onClick={() => handleEdit(index)}
-                                        sx={{mt: 1, mr: 1}}
+                                        sx={{ mt: 1, mr: 1 }}
                                     >
                                         EDIT
                                     </Button> : <Button
                                         disabled={isEmpty(eventValue)}
                                         variant="contained"
                                         onClick={handleNext}
-                                        sx={{mt: 1, mr: 1}}
+                                        sx={{ mt: 1, mr: 1 }}
                                     >
                                         {index === freeVar.length - 1 || testing ? 'Selesai' : 'Selanjutnya'}
                                     </Button>}
@@ -259,7 +281,7 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
                                     <Button
                                         disabled={index === 0}
                                         onClick={handleBack}
-                                        sx={{mt: 1, mr: 1}}
+                                        sx={{ mt: 1, mr: 1 }}
                                     >
                                         Kembali
                                     </Button>
@@ -273,7 +295,7 @@ export default function Card({onButtonClick, updateContext, currentTab}) {
             {isModalOpen && (
                 <div>
                     <ModalComponent handleError={error} handleReset={handleReset} isModalOpen={isModalOpen}
-                                    setIsModalOpen={setIsModalOpen}/>
+                        setIsModalOpen={setIsModalOpen} />
                 </div>
             )}
         </Box>
