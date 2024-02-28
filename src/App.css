@@ -6,16 +6,18 @@
 
 *{
   padding: 3px;
+
 }
 
 
 .main-container{
   min-width: 300px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  
+  margin: auto;
 }
 
 .banner{
@@ -60,11 +62,14 @@
   display: flex;
   justify-content: center;
   position:sticky;
+  min-width: fit-content;
+  max-width: 900px;
   top: 0;
 }
 
 .form-container{
   display: flex;
+  max-width: 900px;
 }
 
 .modal-container{
