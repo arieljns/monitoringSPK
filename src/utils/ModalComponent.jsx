@@ -11,12 +11,15 @@ function ModalComponent({ handleError, handleReset, isModalOpen, setIsModalOpen,
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.position = 'fixed';
+      document.body.style.overflow = 'hidden';
     } else {
       document.body.style.position = 'static';
+      document.body.style.overflow = 'auto';
     }
 
     return () => {
       document.body.style.position = 'static';
+      document.body.style.overflow = 'auto';
     };
   }, [isModalOpen]);
 
@@ -39,14 +42,15 @@ function ModalComponent({ handleError, handleReset, isModalOpen, setIsModalOpen,
         <Button variant="contained" onClick={closeModal}>Close</Button>
       </Modal> : <Modal
         className="modal"
-        style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
+        style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)',content:{width:'50vw'} } }}
+      
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Thank You Modal"
       >
         <img alt='success' src='sukses.svg' width={198} height={198} />
-        <Typography variant='h4' sx={{ fontWeight: "bold", maxWidth:390, fontSize:25 }}>TERIMA KASIH UNTUK RESPON ANDA</Typography>
-        <Button sx={{width:200}} variant="contained" onClick={closeModal}>Close</Button>
+        <Typography variant='h4' sx={{ fontWeight: "bold", maxWidth: 390, fontSize: 25 }}>TERIMA KASIH UNTUK RESPON ANDA</Typography>
+        <Button sx={{ width: 200 }} variant="contained" onClick={closeModal}>Close</Button>
       </Modal>}
 
     </div>

@@ -52,6 +52,10 @@ const steps = [
         description: <BasicTextFieldComponent props="text" />,
     },
     {
+        label: 'Jenis Kegiatan',
+        description: <CheckBoxComponent props="jenisKegiatan" />,
+    },
+    {
         label:"Upload Bukti Kegiatan:",
         description:<BasicTextFieldComponent props="text"/>
     },

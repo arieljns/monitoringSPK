@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function uploadFormData(context) {
     try {
         let res = await axios.post(
-            process.env.REACT_APP_API_URL,
+            `${process.env.REACT_APP_API_URL}`,
             context,
             {
                 headers: {
@@ -12,11 +12,11 @@ export default async function uploadFormData(context) {
             }
         );
 
-            
+
         console.log('Server Response:', res.status);
 
         if (res.status === 200) {
-            return res;
+            return res.data;
         } else {
             console.log('This is the response from the server:', res);
         }

@@ -14,12 +14,15 @@ export default function CheckboxLabels({ updateEventValue, props }) {
     const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent props="text" />]
     const kehadiran = ['hadir', 'cuti']
     const kegiatan = ['ya', 'tidak']
+    const jenisKegiatan = ['Tahunan', 'Semesteran', 'Triwulanan', 'Bulanan', 'ad Hoc', <BasicTextFieldComponent props="text" />]
 
 
     if (props === "kehadiran") {
         var freeVariable = kehadiran
     } else if (props === 'satuanTarget') {
         freeVariable = satuanTarget
+    } else if (props === "jenisKegiatan") {
+        freeVariable = jenisKegiatan
     } else {
         freeVariable = kegiatan
     }
