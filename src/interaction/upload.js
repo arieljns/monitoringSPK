@@ -12,12 +12,15 @@ export default async function uploadFormData(context) {
             }
         );
 
-
+            
         console.log('Server Response:', res.status);
 
         if (res.status === 200) {
             return res.data;
-        } else {
+        } else if (res.status === 400 || res.status === 404) {
+            console.log("user error")
+        }
+        else {
             console.log('This is the response from the server:', res);
         }
     } catch (error) {
