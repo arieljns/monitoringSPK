@@ -18,7 +18,8 @@ const namaPjk = [
     'Sarah Nurlaily, S.ST., M.E.K.K',
     'Edvin Nur Febrianto, SST, M.E.K.K',
     'Rohmana. S.ST',
-    'DR. Daryanto, S.ST, M.M'
+    'DR. Daryanto, S.ST, M.M',
+    ' Erwin Subarkah, S.Kom'
 
 ];
 
