@@ -42,7 +42,7 @@ export default function Card({ onButtonClick, updateContext, current }) {
     const [formData, setFormData] = useState({
         namaKaryawan: "",
         tanggal: "",
-        kehadiran: "",
+        cuti: "",
         jamMulai: "",
         jamSelesai: "",
         namaPjk: "",
@@ -110,7 +110,7 @@ export default function Card({ onButtonClick, updateContext, current }) {
 
     var freeVar = nextTab > 0 ? slicedSteps : steps
 
-    const objectKey = ['namaKaryawan', 'tanggal', 'kehadiran', 'jamMulai', 'jamSelesai', 'namaPjk', 'target', 'satuanTarget', 'capaianTarget', 'satuanCapaian', 'deskripsiKegiatan', 'jenisKegiatan', 'buktiKegiatan',
+    const objectKey = ['namaKaryawan', 'tanggal', 'cuti', 'jamMulai', 'jamSelesai', 'namaPjk', 'target', 'satuanTarget', 'capaianTarget', 'satuanCapaian', 'deskripsiKegiatan', 'jenisKegiatan', 'buktiKegiatan',
         'jamMulai_2', 'jamSelesai_2', 'namaPjk_2', 'target_2', 'satuanTarget_2', 'capaianTarget_2', 'satuanCapaian_2', 'deskripsiKegiatan_2', 'jenisKegiatan_2', 'buktiKegiatan_2',
         'jamMulai_3', 'jamSelesai_3', 'namaPjk_3', 'target_3', 'satuanTarget_3', 'capaianTarget_3', 'satuanCapaian_3', 'deskripsiKegiatan_3', 'jenisKegiatan_3', 'buktiKegiatan_3',
         'jamMulai_4', 'jamSelesai_4', 'namaPjk_4', 'target_4', 'satuanTarget_4', 'capaianTarget_4', 'satuanCapaian_4', 'deskripsiKegiatan_4', 'jenisKegiatan_4', 'buktiKegiatan_4',
@@ -392,7 +392,7 @@ export default function Card({ onButtonClick, updateContext, current }) {
         <Box className="form-container" elevation={100}
             sx={{ maxWidth: { xs: 370, sm: 475, lg: 970, }, overflowX: "hidden" }}>
             <Stepper elevation={10} activeStep={activeStep} active={true}
-                orientation="vertical" sx={{maxWidth:{xs:360, sm:475, lg:1000}}}>
+                orientation="vertical" sx={{ maxWidth: { xs: 360, sm: 475, lg: 1000 } }}>
                 {freeVar.map((step, index) => (
 
                     <Step key={step.label} expanded={filledSteps.includes(index)}>
