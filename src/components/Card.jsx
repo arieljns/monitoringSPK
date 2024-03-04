@@ -208,14 +208,14 @@ export default function Card({ onButtonClick, updateContext, current }) {
                 payload: newFormData
             });
             if (nextTab >= 1) {
-                const formCombined = { ...formData };
+                const formCombined = { ...data };
 
                 for (const key in formData) {
-                    for (const key in data) {
-                        if (data[key] !== null && data[key] !== "") {
-                            formCombined[key] = data[key];
-                        }
+
+                    if (data[key] !== null && data[key] !== "") {
+                        formCombined[key] = formData[key];
                     }
+
                 }
 
                 dispatch({
@@ -318,7 +318,7 @@ export default function Card({ onButtonClick, updateContext, current }) {
         setFormData({
             namaKaryawan: "",
             tanggal: "",
-            kehadiran: "",
+            cuti: "",
             jamMulai: "",
             jamSelesai: "",
             namaPjk: "",

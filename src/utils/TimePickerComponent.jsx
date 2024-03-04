@@ -3,7 +3,7 @@ import dayjs from 'dayjs'; // Import dayjs
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { Stack } from '@mui/material';
 
 export default function BasicTimePicker({ updateEventValue }) {
@@ -17,7 +17,7 @@ export default function BasicTimePicker({ updateEventValue }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['TimePicker']}>
         <Stack sx={{ maxWidth: 250 }} >
-          <TimePicker
+          <MobileTimePicker
             label="Pilih Jam Keluar/ Masuk"
             onChange={handleTimeChange}
           />
