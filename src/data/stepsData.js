@@ -15,7 +15,7 @@ const steps = [
             <DatePickerComponent />,
     },
     {
-        label: 'Kehadiran',
+        label: 'Cuti',
         description:
             <CheckBoxComponent props="kehadiran" />,
     },

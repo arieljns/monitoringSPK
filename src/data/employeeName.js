@@ -1,8 +1,7 @@
 const namaPjk = [
-    'Sastriana Yumarto',
-    'Ujang Jaelani, S.ST., M.Stat.',
+    'Agus Nuwibowo, S.Si, M.M',
+    'Erwin Subarkah, S.Kom',
     ' Supriyadi, S.P., M.M.',
-    'Atik Fitri Rahmawati, S.Si, M.SE',
     'Atik Fitri Rahmawati, S.Si, M.SE',
     'Tri Isdinarmiati, S.ST., S.E., M.Si.',
     'Eka Zulaeha Damayanti, S.ST.',
@@ -17,20 +16,22 @@ const namaPjk = [
     'Dwi Purnama Indah, S.E.,M.M.',
     'Satria Rusyadi, S.P',
     'Sarah Nurlaily, S.ST., M.E.K.K',
+    'Edvin Nur Febrianto, SST, M.E.K.K',
+    'Rohmana. S.ST',
+    'DR. Daryanto, S.ST, M.M'
 
 ];
 
 const namaKaryawan = [
-    'Ir. Raden Gandari Adianti Aju Fatimah, M.Si',
+    'DR. Daryanto, S.ST, M.M',
     'Trenggana Indra Prahasta',
     'Syarif Hidayatulloh',
     'Indra Kusumah Diansyah',
-    'Satriana Yasmuarto, S.Si, M.M',
+    'Agus Nuwibowo, S.Si, M.M',
     'Ujang Jaelani, S.ST., M.Stat.',
     'Raden Candra Ningrum, M.S.E., MPP',
     'Supriyadi, S.P., M.M.',
     'Atik Fitri Rahmawati, S.Si, M.SE',
-    'Tri Isdinarmiati, S.ST., S.E., M.Si.',
     'Eka Zulaeha Damayanti, S.ST.',
     'Alin Fadhlina Hayati, SST, M.E.K.K',
     'Adhitya Kusuma Wahyunugroho, S.Si',
@@ -79,4 +80,4 @@ const namaKaryawan = [
 ]
 
 
-export {namaKaryawan, namaPjk}
+export { namaKaryawan, namaPjk }

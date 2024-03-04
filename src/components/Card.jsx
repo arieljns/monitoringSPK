@@ -199,9 +199,9 @@ export default function Card({ onButtonClick, updateContext, current }) {
         setEdited(false)
 
         if (eventValue === "ya") {
-            // console.log("harusnya ke dispacth")
-            // let counter = 0
-            // counter++
+            console.log("harusnya ke dispacth")
+            let counter = 0
+            counter++
             setNextTab(nextTab + 1);
             dispatch({
                 type: "UPLOADING",
@@ -233,7 +233,7 @@ export default function Card({ onButtonClick, updateContext, current }) {
 
         if (nextStep === freeVar.length || eventValue === "cuti") {
             const combinedForm = {};
-            if (nextTab > 1) {
+            if (nextTab >= 1) {
                 for (const key in formData) {
                     if (formData[key] !== null && formData[key] !== "") {
                         combinedForm[key] = formData[key];
