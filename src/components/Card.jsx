@@ -250,10 +250,6 @@ export default function Card({ onButtonClick, updateContext, current }) {
             await uploadFormData(uploadMana)
             setIsModalOpen(true);
             setEventValue(null);
-            //
-            // if (uploadingData.status !== 200) {
-            //     setError(true);
-            // }
             setError(false);
             dispatch({
                 type: "UPLOADING",
@@ -422,7 +418,7 @@ export default function Card({ onButtonClick, updateContext, current }) {
                                             onClick={handleNext}
                                             sx={{ mt: 1, mr: 1 }}
                                         >
-                                            {index === freeVar.length - 1 || testing ? 'Selesai' : 'Selanjutnya'}
+                                            {index === freeVar.length - 1 || testing ? 'Finish' : 'Next'}
 
                                         </Button>
 

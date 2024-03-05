@@ -11,7 +11,7 @@ export default function CheckboxLabels({ updateEventValue, props }) {
     const [selectedOption, setSelectedOption] = useState(null);
     const [click, setClick] = useState(false)
 
-    const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'satuan', <BasicTextFieldComponent props="text" />]
+    const satuanTarget = ['Rumah Tangga', 'Perusahaan ', 'Blok Sensus', 'Sls', <BasicTextFieldComponent props="text" />]
     const kehadiran = ['hadir', 'cuti']
     const kegiatan = ['ya', 'tidak']
     const jenisKegiatan = ['Tahunan', 'Semesteran', 'Triwulanan', 'Bulanan', 'ad Hoc', <BasicTextFieldComponent props="text" />]
