@@ -208,14 +208,14 @@ export default function Card({ onButtonClick, updateContext, current }) {
                 payload: newFormData
             });
             if (nextTab >= 1) {
-                const formCombined = { ...data };
+                const formCombined = { ...formData };
 
                 for (const key in formData) {
-
-                    if (data[key] !== null && data[key] !== "") {
-                        formCombined[key] = formData[key];
+                    for (const key in data) {
+                        if (data[key] !== null && data[key] !== "") {
+                            formCombined[key] = data[key];
+                        }
                     }
-
                 }
 
                 dispatch({
@@ -246,13 +246,14 @@ export default function Card({ onButtonClick, updateContext, current }) {
             console.log("ini adalah data: ", data)
             console.log("ini adalah combined form", combinedForm)
             let uploadMana = nextTab > 0 ? combinedForm : formData
-            let uploadingData = uploadFormData(uploadMana)
+            console.log("ini adalah data yang akan di upload: ", uploadMana)
+            await uploadFormData(uploadMana)
             setIsModalOpen(true);
             setEventValue(null);
-
-            if (uploadingData.status !== 200) {
-                setError(true);
-            }
+            //
+            // if (uploadingData.status !== 200) {
+            //     setError(true);
+            // }
             setError(false);
             dispatch({
                 type: "UPLOADING",
